@@ -26,6 +26,16 @@ define([
 					var _collection = $( '#collection_'+_col );
 
 
+					//remove autoload functionality
+					if( $( this ).data( 'filter') === 'all' ){
+						_collection.removeClass( 'hold-autoload' );
+						_collection.data( 'page', 1 );
+					}else{
+						_collection.addClass( 'hold-autoload' );
+
+					}
+
+
 					var data = {
 
 						action: 'autoload',

@@ -50,6 +50,8 @@
 						$_POST['filter_on'] = 'cat';
 
 					$query[ $_POST['filter_on' ] ] = $_POST['filter_val'];
+					$query[ 'posts_per_page' ] = '-1';
+					$query[ 'paged' ] = '1';
 
 				}
 
