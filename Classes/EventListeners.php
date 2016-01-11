@@ -55,6 +55,11 @@
 
 				}
 
+
+				if( isset( $_POST['search'] ) )
+					$query['s'] = $_POST['search'];
+					
+
 				return $query;
 			}, 100, 2 );
 

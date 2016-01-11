@@ -80,6 +80,7 @@
 	
 			//get all fields for this column
 			$fields = $this->getFields();
+			$sideFields = $this->getSideFields();
 				
 			echo '<div class="main-content">';
 			
@@ -98,7 +99,18 @@
 			echo '<div class="side-content">';
 				
 				//optional: side fields
-	
+			
+				foreach( $sideFields as $sideField ){
+
+					$sideField->render();
+
+					if( method_exists( $field, 'renderTemplate' ) ){
+						echo $field->renderTemplate();
+					}
+
+				}
+
+
 				$this->saveButton();
 	
 			echo '</div>';
@@ -114,7 +126,6 @@
 
 			$columns = $this->getCollectionColumns();
 			$taxonomies = $this->getTaxonomies();
-			$sorton = array( 'date' => 'Datum', 'name' => 'Alfabetisch' );
 
 			$fields = array(
 
@@ -143,8 +154,26 @@
 						'defaultValue' => $this->getField( 'taxonomy' )
 					)
 
-				),
+				)
+				
+			);
+	
+			$fields = apply_filters( 'chef_filter_column_main_fields', $fields, $this );
+			return $fields;
+	
+		}
 
+
+		/**
+		 * Get the fields in the sidebar for this column
+		 * 
+		 * @return [type] [description]
+		 */
+		private function getSideFields(){
+
+			$sorton = array( 'date' => 'Datum', 'name' => 'Alfabetisch' );
+
+			$fields = array(
 				Field::select(
 					'sort_on',
 					'Sorteer op',
@@ -152,12 +181,21 @@
 					array(
 						'defaultValue'	=> $this->getField( 'sort_on', 'name' )
 					)
+				),
+
+				Field::checkbox(
+					'show_search',
+					'Laat zoekveld zien',
+					array(
+						'defaultValue' => $this->getField( 'show_search', 'false' )
+					)
 				)
-				
-			);
-	
+			);	
+
+
+			$fields = apply_filters( 'chef_filter_column_side_fields', $fields, $this );
 			return $fields;
-	
+
 		}
 
 

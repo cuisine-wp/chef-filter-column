@@ -5,6 +5,14 @@
 
 
 	echo '<div class="column filter-column">';
+
+	if( $column->getField( 'show_search', 'false' ) == 'true' ){
+		echo '<span class="search">';
+			echo '<input type="text" name="s" id="search-query" placeholder="ZOEKEN">';
+			echo '<button class="submit" type="submit" id="submit-search"></button>';
+		echo '</span>';
+	}
+
 	
 	if( !empty( $terms ) ){
 		
