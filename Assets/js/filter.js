@@ -53,7 +53,8 @@ define([
 
 		var _collection = $( '#collection_'+_col );
 		var _activeFilter = $( '.filter.active' );
-
+		
+		_collection.addClass( 'loading' );
 
 		//remove autoload functionality
 		if( _activeFilter.data( 'filter') === 'all' ){
@@ -87,7 +88,9 @@ define([
 
 
 		$.post( Cuisine.ajax, data, function( response ){
-
+			
+			_collection.removeClass( 'loading' );
+			
 			if( response === 'message' ){
 
 				_collection.html( _collection.data('msg') );
