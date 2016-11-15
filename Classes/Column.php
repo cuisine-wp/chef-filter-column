@@ -2,104 +2,104 @@
 
 	//again, change this namespace:
 	namespace ChefFilterColumn;
-	
+
 	use ChefSections\Columns\DefaultColumn;
 	use ChefSections\Wrappers\SectionsBuilder;
 	use Cuisine\Wrappers\Field;
 	use Cuisine\Utilities\Url;
 	use Cuisine\Wrappers\Script;
-	
-	
+
+
 	class Column extends DefaultColumn{
-	
+
 		/**
 		 * The type of column
-		 * 
+		 *
 		 * @var String
 		 */
 		public $type = 'filter';
-	
-	
+
+
 		/*=============================================================*/
 		/**             Template                                       */
 		/*=============================================================*/
-	
-	
+
+
 		/**
 		 * Start the column template
-		 * 
+		 *
 		 * @return string ( html, echoed )
 		 */
 		public function beforeTemplate(){
-	
+
 			//runs before Assets/template.php is presented
-		
+
 		}
-	
-	
-	
+
+
+
 		/**
 		 * Add javascripts to the footer, before the template
 		 * and close the div wrapper
-		 * 
+		 *
 		 * @return string ( html, echoed )
 		 */
 		public function afterTemplate(){
-	
+
 			//runs after Assets/template.php is presented
-			$url = Url::plugin( 'chef-filter-column', true ).'Assets/js/';			
+			$url = Url::plugin( 'chef-filter-column', true ).'Assets/js/';
 			Script::register( 'filter', $url.'filter', true );
-	
+
 		}
-	
-	
+
+
 		/*=============================================================*/
 		/**             Backend                                        */
 		/*=============================================================*/
-	
-		
-	
+
+
+
 		/**
 		 * Create the preview for this column
-		 * 
+		 *
 		 * @return string (html,echoed)
 		 */
 		public function buildPreview(){
-	
+
 			echo '<strong>'.$this->getField( 'title' ).'</strong>';
-	
+
 		}
-	
-	
+
+
 		/**
 		 * Build the contents of the lightbox for this column
-		 * 
+		 *
 		 * @return string ( html, echoed )
 		 */
 		public function buildLightbox(){
-	
+
 			//get all fields for this column
 			$fields = $this->getFields();
 			$sideFields = $this->getSideFields();
-				
+
 			echo '<div class="main-content">';
-			
+
 				foreach( $fields as $field ){
-	
+
 					$field->render();
-	
+
 					//if a field has a JS-template, we need to render it:
 					if( method_exists( $field, 'renderTemplate' ) ){
 						echo $field->renderTemplate();
 					}
-	
+
 				}
-	
+
 			echo '</div>';
 			echo '<div class="side-content">';
-				
+
 				//optional: side fields
-			
+
 				foreach( $sideFields as $sideField ){
 
 					$sideField->render();
@@ -112,14 +112,14 @@
 
 
 				$this->saveButton();
-	
+
 			echo '</div>';
 		}
-	
-	
+
+
 		/**
 		 * Get the fields for this column
-		 * 
+		 *
 		 * @return [type] [description]
 		 */
 		private function getFields(){
@@ -129,7 +129,7 @@
 
 			$fields = array(
 
-				Field::text( 
+				Field::text(
 					'title', 				//id
 					'Filter titel',			//label
 					array(
@@ -155,18 +155,18 @@
 					)
 
 				)
-				
+
 			);
-	
+
 			$fields = apply_filters( 'chef_filter_column_main_fields', $fields, $this );
 			return $fields;
-	
+
 		}
 
 
 		/**
 		 * Get the fields in the sidebar for this column
-		 * 
+		 *
 		 * @return [type] [description]
 		 */
 		private function getSideFields(){
@@ -190,7 +190,7 @@
 						'defaultValue' => $this->getField( 'show_search', 'false' )
 					)
 				)
-			);	
+			);
 
 
 			$fields = apply_filters( 'chef_filter_column_side_fields', $fields, $this );
@@ -206,24 +206,25 @@
 
 		/**
 		 * Get all available terms in this taxonomy, for use in template
-		 * 
+		 *
 		 * @return array of Term objects
 		 */
 		public function getTerms(){
 
-			return get_terms( $this->getField( 'taxonomy' ), 
-						array( 
-							'hide_empty' 		=> apply_filters( 'chef_filter_hide_empty', true ),
-							'orderby'			=> $this->getField( 'sort_on', 'name' )
-						) 
+			$args = array(
+				'hide_empty' 		=> apply_filters( 'chef_filter_hide_empty', true ),
+				'orderby'			=> $this->getField( 'sort_on', 'name' )
 			);
+
+			$args = apply_filters( 'chef_filter_column_term_query', $args );
+			return get_terms( $this->getField( 'taxonomy' ), $args );
 
 		}
 
 
 		/**
 		 * Returns an array of id => names of active taxonomies
-		 * 
+		 *
 		 * @return array
 		 */
 		private function getTaxonomies(){
@@ -246,14 +247,14 @@
 
 		/**
 		 * Returns an array of id => names of collection columns.
-		 * 
+		 *
 		 * @return array
 		 */
 		private function getCollectionColumns(){
 
 			$sections = SectionsBuilder::getSections();
 			$columns = array();
-			$allowed = apply_filters( 'chef_filter_column_types', array( 'collection' ) ); 
+			$allowed = apply_filters( 'chef_filter_column_types', array( 'collection' ) );
 
 			foreach( $sections as $section ){
 
@@ -274,6 +275,5 @@
 
 		}
 
-	
+
 	}
-	
