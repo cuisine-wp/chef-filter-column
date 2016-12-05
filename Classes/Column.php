@@ -25,17 +25,6 @@
 		/*=============================================================*/
 
 
-		/**
-		 * Start the column template
-		 *
-		 * @return string ( html, echoed )
-		 */
-		public function beforeTemplate(){
-
-			//runs before Assets/template.php is presented
-
-		}
-
 
 
 		/**
@@ -212,13 +201,48 @@
 		public function getTerms(){
 
 			$args = array(
-				'hide_empty' 		=> apply_filters( 'chef_filter_hide_empty', true ),
+				'hide_empty' 		=> apply_filters( 'chef_filter_hide_empty', false ),
 				'orderby'			=> $this->getField( 'sort_on', 'name' )
 			);
 
 			$args = apply_filters( 'chef_filter_column_term_query', $args );
-			return get_terms( $this->getField( 'taxonomy' ), $args );
+			$terms = get_terms( $this->getField( 'taxonomy' ), $args );
 
+			$terms = $this->makeHierarchical( $terms );
+			$terms = apply_filters( 'chef_filter_column_terms', $terms );
+			return $terms;
+		}
+
+		/**
+		 * Add the hierarchy in the array we push to the template
+		 *
+		 * @return array
+		 */
+		public function makeHierarchical( $terms )
+		{
+
+			$_response = array();
+			if( !empty( $terms ) ){
+
+				foreach( $terms as $term ){
+
+					if( $term->parent == 0 ){
+
+						$term->children = array();
+
+						foreach( $terms as $child ){
+
+							if( $child->parent == $term->term_id ){
+								$term->children[] = $child;
+							}
+						}
+
+						$_response[] = $term;
+					}
+				}
+			}
+
+			return $_response;
 		}
 
 

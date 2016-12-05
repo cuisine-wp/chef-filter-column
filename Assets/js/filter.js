@@ -1,5 +1,5 @@
 define([
-	
+
 	//define dependencies at the top:
 	'jquery'
 
@@ -7,15 +7,15 @@ define([
 ], function( $ ){
 
 	$(document).ready(function(){
-		
+
 		if( $('.filter-items').length > 0 ){
 
-			$( '.filter' ).on( 'click tap', function( e ){
+			$( document ).on( 'click tap', '.filter', function( e ){
 
 				e.preventDefault();
 
 				if( $( this ).hasClass( 'active' ) === false ){
- 
+
 					$( '.filter' ).removeClass( 'active' );
 					$( this ).addClass( 'active' );
 
@@ -28,7 +28,7 @@ define([
 
 				e.preventDefault();
 				filterCollectionItems();
-			
+
 			});
 
 			$( '#search-query' ).on( 'keyup', function( e ){
@@ -37,11 +37,11 @@ define([
 					e.preventDefault();
 					filterCollectionItems();
 				}
-			
+
 			});
 
 		}
- 
+
 
 	});
 
@@ -53,7 +53,7 @@ define([
 
 		var _collection = $( '#collection_'+_col );
 		var _activeFilter = $( '.filter.active' );
-		
+
 		_collection.addClass( 'loading' );
 
 		//remove autoload functionality
@@ -88,9 +88,9 @@ define([
 
 
 		$.post( Cuisine.ajax, data, function( response ){
-			
+
 			_collection.removeClass( 'loading' );
-			
+
 			if( response === 'message' ){
 
 				_collection.html( _collection.data('msg') );
@@ -101,5 +101,5 @@ define([
 
 		});
 	}
-	
+
 });
