@@ -1,6 +1,6 @@
 {
-  "name": "chefduweb/boilerplate-column",
-  "description": "A column boilerplate for Chef Sections",
+  "name": "chefduweb/chef-filter-column",
+  "description": "Filter collections",
   "keywords": ["wordpress", "column", "sections"],
   "homepage": "http://www.chefduweb.nl",
   "license": "GPLv3",
@@ -9,7 +9,7 @@
       "name": "Luc Princen",
       "email": "luc@chefduweb.nl",
       "homepage": "http://www.chefduweb.nl"
-    },
+    }
   ],
   "type": "wordpress-plugin",
   "require": {
