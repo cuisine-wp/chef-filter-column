@@ -111,7 +111,7 @@
 		 *
 		 * @return [type] [description]
 		 */
-		private function getFields(){
+		public function getFields(){
 
 			$columns = $this->getCollectionColumns();
 			$taxonomies = $this->getTaxonomies();
