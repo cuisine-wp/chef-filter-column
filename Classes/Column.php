@@ -3,11 +3,12 @@
 	//again, change this namespace:
 	namespace ChefFilterColumn;
 
-	use ChefSections\Columns\DefaultColumn;
-	use ChefSections\Wrappers\SectionsBuilder;
-	use Cuisine\Wrappers\Field;
 	use Cuisine\Utilities\Url;
+	use Cuisine\Wrappers\Field;
 	use Cuisine\Wrappers\Script;
+	use Cuisine\Utilities\Session;
+	use ChefSections\Columns\DefaultColumn;
+	use ChefSections\Collections\SectionCollection;
 
 
 	class Column extends DefaultColumn{
@@ -276,11 +277,12 @@
 		 */
 		private function getCollectionColumns(){
 
-			$sections = SectionsBuilder::getSections();
+			$sections = ( new SectionCollection( Session::postId() ) );
+			
 			$columns = array();
 			$allowed = apply_filters( 'chef_filter_column_types', array( 'collection' ) );
 
-			foreach( $sections as $section ){
+			foreach( $sections->all() as $section ){
 
 				if( !empty( $section->columns ) ){
 					foreach( $section->columns as $column ){
@@ -290,7 +292,6 @@
 							$columns[ $column->fullId ] = $section->title.' - '.$column->id;
 
 						}
-
 					}
 				}
 			}
