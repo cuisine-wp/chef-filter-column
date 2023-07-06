@@ -49,10 +49,13 @@ define([
 	function filterCollectionItems(){
 
 		var _tax = $( '.filter-items').data('tax');
-		var _col = $( '.filter-items').data('col');
+        var _col = $( '.filter-items').data('col');
+        
 
 		var _collection = $( '#collection_'+_col );
 		var _activeFilter = $( '.filter.active' );
+
+        console.log( _tax +' -- '+ _col );
 
 		_collection.addClass( 'loading' );
 
@@ -98,6 +101,9 @@ define([
 			}else{
 				_collection.html( response );
 			}
+
+            var _event = new CustomEvent('autoload_complete', { 'detail': { 'element': _collection[0] } });
+            document.dispatchEvent(_event);
 
 		});
 	}
