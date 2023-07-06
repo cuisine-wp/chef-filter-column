@@ -55,9 +55,13 @@
 		 * @return string (html,echoed)
 		 */
 		public function buildPreview(){
+			
+            $title = $this->getField( 'title' );
 
-			echo '<strong>'.$this->getField( 'title' ).'</strong>';
-
+			if( $title && is_array( $title ) ){
+				$title = $title['text'];
+			}
+			
 		}
 
 
